@@ -24,7 +24,12 @@ public void ajouteCarte(Carte carte) {
         main[nombreCartes++] = carte;
     }
 }
-
+public Carte getCarte(int index) {
+    if (index >= 0 && index < nombreCartes) {
+        return main[index];
+    }
+    return null; // Gérer le cas où l'index est invalide
+}
 public Carte jouerCarte(int index) {
     if (index >= 0 && index < nombreCartes) {
         Carte carteJouee = main[index];
