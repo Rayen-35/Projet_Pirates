@@ -52,8 +52,8 @@ package pirate;
 	    }
 
 	    @Override
-	    public void afficherJeuCarte(String pirate, String description) {
-	        System.out.println(pirate + " joue une carte dans la zone de " + description + ".");
+	    public void afficherJeuCarte(String pirate, String description, String zone) {
+	        System.out.println(pirate + " joue une carte dans la " + zone + " : " + description);
 	    }
 	   
 	    
