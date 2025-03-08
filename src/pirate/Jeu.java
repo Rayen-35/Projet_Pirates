@@ -22,9 +22,26 @@ public class Jeu {
     }
 
     public void demarrerJeu() {
+        affichage.afficherDemarrage();
+        int choix;
+        do {
+            affichage.afficherChoixPirate();
+            choix = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choix != 1 && choix != 2) {
+                affichage.afficherMessageInvalide();
+            }
+        } while (choix != 1 && choix != 2);
+        
+        // Assignation des joueurs à l'attribut de la classe
+        this.joueur = choix == 1 ? new Pirate("Jack le Borgne") : new Pirate("Bill Jambe-de-Bois");
+        this.adversaire = choix == 1 ? new Pirate("Bill Jambe-de-Bois") : new Pirate("Jack le Borgne");
+
         affichage.afficherConfirmationChoix(joueur.getNom());
         affichage.afficherDebutJeu();
 
+        // Création du deck avec 40 cartes
         Carte[] deckCartes = new Carte[40];
         for (int i = 0; i < 40; i++) {
             if (i % 3 == 0) {
@@ -40,6 +57,7 @@ public class Jeu {
         }
         this.deck = new Deck(deckCartes);
 
+        // Distribution des 4 cartes initiales au joueur
         String[] cartesJoueur = new String[4];
         for (int i = 0; i < 4; i++) {
             Carte carte = deck.piocher();
@@ -50,14 +68,13 @@ public class Jeu {
 
         afficherEtatJeu();
 
+        // Suppression de la vérification si le deck est vide
         while (joueur.estVivant() && adversaire.estVivant() && !joueur.aGagne() && !adversaire.aGagne()) {
-            if (deck.estVide()) {
-                affichage.afficherDeckVide();
-                break;
-            }
-            jouerTour();
+            jouerTour(); // On continue les tours même si le deck est vide
         }
     }
+
+
 
     public void jouerTour() {
         affichage.afficherTour(round);
@@ -69,16 +86,14 @@ public class Jeu {
             affichage.afficherTirageCarte(joueur.getNom(), nouvelleCarteJoueur.getNom() + " - " + nouvelleCarteJoueur.getDescription());
         }
 
-        // Affichage des cartes disponibles avec la carte piochée bien incluse
-        System.out.println("Choisissez une carte à jouer (1 - " + joueur.getNombreCartes() + ") :");
-        for (int i = 0; i < joueur.getNombreCartes(); i++) {
-            System.out.println((i + 1) + "- " + joueur.getCarte(i).getNom() + " - " + joueur.getCarte(i).getDescription());
-        }
+        // Affichage des cartes disponibles
+        affichage.afficherChoixCarteAJouer(joueur.getNom(), joueur.getNombreCartes());
+        affichage.afficherCartesDisponibles(joueur);
 
         // Saisie utilisateur pour le choix de carte
         int choix = scanner.nextInt() - 1;
         while (choix < 0 || choix >= joueur.getNombreCartes()) {
-            System.out.println("Choix invalide. Veuillez saisir un numéro valide.");
+            affichage.afficherMessageChoixInvalide();
             choix = scanner.nextInt() - 1;
         }
 
@@ -87,20 +102,29 @@ public class Jeu {
         affichage.afficherChoixCarte(joueur.getNom(), carteJoueur.getNom() + " - " + carteJoueur.getDescription());
         affichage.afficherJeuCarte(joueur.getNom(), carteJoueur.getDescription(), carteJoueur.getZone());
         carteJoueur.effet(joueur, adversaire);
-
+        
+        String[] cartesAdversaire = new String[4];
+        for (int i = 0; i < 4; i++) {
+            Carte carte = deck.piocher();
+            adversaire.ajouteCarte(carte);
+            cartesAdversaire[i] = carte.getNom() + " - " + carte.getDescription();
+        }
+      //  affichage.afficherCartesInitiales(adversaire.getNom(), cartesAdversaire);
         if (!adversaire.estVivant() || joueur.aGagne()) {
             affichage.afficherVictoire(joueur.getNom());
             return;
         }
 
         // Tour de l'adversaire
-        if (adversaire.getNombreCartes() > 0) {
+        if  (round == 1 || adversaire.getNombreCartes() > 0) {
+
             int choixAdversaire = random.nextInt(adversaire.getNombreCartes());
             Carte carteAdversaire = adversaire.jouerCarte(choixAdversaire);
             affichage.afficherChoixCarte(adversaire.getNom(), carteAdversaire.getNom() + " - " + carteAdversaire.getDescription());
             affichage.afficherJeuCarte(adversaire.getNom(), carteAdversaire.getDescription(), carteAdversaire.getZone());
             carteAdversaire.effet(adversaire, joueur);
         }
+        
 
         if (!joueur.estVivant() || adversaire.aGagne()) {
             affichage.afficherVictoire(adversaire.getNom());
@@ -118,19 +142,19 @@ public class Jeu {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        AffichageTexte affichage = new AffichageTexte();
+    	
+    	    Scanner scanner = new Scanner(System.in);
+    	    AffichageTexte affichage = new AffichageTexte();
 
-        affichage.afficherDemarrage();
-        affichage.afficherChoixPirate();
-        int choix = scanner.nextInt();
-        scanner.nextLine();
+    	    // Création d'un deck vide (sera rempli dans `demarrerJeu`)
+    	    Deck deck = new Deck(new Carte[0]);
 
-        Pirate joueur = choix == 1 ? new Pirate("Jack le Borgne") : new Pirate("Bill Jambe-de-Bois");
-        Pirate adversaire = choix == 1 ? new Pirate("Bill Jambe-de-Bois") : new Pirate("Jack le Borgne");
+    	    // Initialisation du jeu avec un joueur et un adversaire qui seront définis dans `demarrerJeu`
+    	    Jeu jeu = new Jeu(null, null, deck, affichage);
 
-        Deck deck = new Deck(new Carte[0]);
-        Jeu jeu = new Jeu(joueur, adversaire, deck, affichage);
-        jeu.demarrerJeu();
+    	    // Démarrer le jeu, la méthode `demarrerJeu` gère la sélection du pirate et l'initialisation
+    	    jeu.demarrerJeu();
+    	}
+
     }
-}
+

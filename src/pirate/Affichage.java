@@ -14,5 +14,9 @@ public interface Affichage {
 	    void afficherEffet(String pirate, String effet);
 	    void afficherPoints(String pirate1, int vie1, int pop1, String pirate2, int vie2, int pop2);
 	    void afficherVictoire(String pirate);
-	    void afficherDeckVide();
+	   
+	    void afficherChoixCarteAJouer(String pirate, int nombreCartes);
+	    void afficherCartesDisponibles(Pirate joueur);
+	    void afficherMessageChoixInvalide();
+	  
 }

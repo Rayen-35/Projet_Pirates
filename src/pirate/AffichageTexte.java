@@ -57,7 +57,24 @@ package pirate;
 	    }
 	   
 	    
-	    
+	    @Override
+	    public void afficherChoixCarteAJouer(String pirate, int nombreCartes) {
+	        System.out.println(pirate + ", choisissez une carte à jouer (1 - " + nombreCartes + ") :");
+	    } //Jack le Borgne, choisissez une carte à jouer (1 - 5) 
+
+	    @Override
+	    public void afficherCartesDisponibles(Pirate joueur) {
+	        for (int i = 0; i < joueur.getNombreCartes(); i++) {
+	            System.out.println((i + 1) + "- " + joueur.getCarte(i).getNom() + " - " + joueur.getCarte(i).getDescription());
+	        }
+	    }
+
+	    @Override
+	    public void afficherMessageChoixInvalide() {
+	        System.out.println("Choix invalide. Veuillez saisir un numéro valide.");
+	    }
+
+	  
 	    @Override
 	    public void afficherEffet(String pirate, String effet) {
 	        System.out.println("Effet appliqué à " + pirate + " : " + effet);
@@ -74,9 +91,6 @@ package pirate;
 	        System.out.println(pirate + " a gagné la partie !");
 	    }
 	    
-	    @Override
-	    public void afficherDeckVide() {
-	        System.out.println("Le deck est vide ! Aucun joueur ne peut plus piocher.");
-	    }
+	  
 	}
 
