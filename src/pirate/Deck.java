@@ -2,7 +2,7 @@ package pirate;
 
 public class Deck {
     private Carte[] cartes;
-    private int indexPioche;
+    private int indexPioche; // Un compteur pour savoir quelle est la prochaine carte à piocher
     
     public Deck(Carte[] cartes) {
         this.cartes = cartes;

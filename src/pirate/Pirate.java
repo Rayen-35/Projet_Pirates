@@ -75,18 +75,16 @@ public void subitAttaque(int degats) {
         defenseActive = false; // Désactiver la défense après une attaque
     }
     pointsVie -= degats;
-    if (pointsVie < 0) {
-        pointsVie = 0;
-    }
+    
     System.out.println(nom + " perd " + degats + " point(s) de vie !");
 }
 
 public void reduirePopularite() {
-    if (popularite > 0) {
+    
         popularite--;
         System.out.println(nom + " perd 1 point de popularité !");
     }
-}
+
 
 public void activerDefense() {
     defenseActive = true;

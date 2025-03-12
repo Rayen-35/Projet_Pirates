@@ -66,11 +66,13 @@ public class Jeu {
         }
         affichage.afficherCartesInitiales(joueur.getNom(), cartesJoueur);
 
-        afficherEtatJeu();
+
+        affichage.afficherPoints(joueur.getNom(), joueur.getPointsVie(), joueur.getPopularite(),
+                adversaire.getNom(), adversaire.getPointsVie(), adversaire.getPopularite());
 
         // Suppression de la vérification si le deck est vide
         while (joueur.estVivant() && adversaire.estVivant() && !joueur.aGagne() && !adversaire.aGagne()) {
-            jouerTour(); // On continue les tours même si le deck est vide
+            jouerTour(); 
         }
     }
 
@@ -91,13 +93,13 @@ public class Jeu {
         affichage.afficherCartesDisponibles(joueur);
 
         // Saisie utilisateur pour le choix de carte
-        int choix = scanner.nextInt() - 1;
+        int choix = scanner.nextInt() - 1; // on soustrait 1 pour passer d'une numérotation humaine (1, 2, 3, 4, ...) à un index de tableau (0, 1, 2, 3, ...).
         while (choix < 0 || choix >= joueur.getNombreCartes()) {
             affichage.afficherMessageChoixInvalide();
             choix = scanner.nextInt() - 1;
         }
 
-        // Jouer la carte sélectionnée
+      
         Carte carteJoueur = joueur.jouerCarte(choix);
         affichage.afficherChoixCarte(joueur.getNom(), carteJoueur.getNom() + " - " + carteJoueur.getDescription());
         affichage.afficherJeuCarte(joueur.getNom(), carteJoueur.getDescription(), carteJoueur.getZone());
@@ -109,7 +111,7 @@ public class Jeu {
             adversaire.ajouteCarte(carte);
             cartesAdversaire[i] = carte.getNom() + " - " + carte.getDescription();
         }
-      //  affichage.afficherCartesInitiales(adversaire.getNom(), cartesAdversaire);
+   
         if (!adversaire.estVivant() || joueur.aGagne()) {
             affichage.afficherVictoire(joueur.getNom());
             return;
@@ -131,15 +133,13 @@ public class Jeu {
             return;
         }
 
-        afficherEtatJeu();
+       
+        affichage.afficherPoints(joueur.getNom(), joueur.getPointsVie(), joueur.getPopularite(),
+                adversaire.getNom(), adversaire.getPointsVie(), adversaire.getPopularite());
         round++;
     }
 
 
-    private void afficherEtatJeu() {
-        affichage.afficherPoints(joueur.getNom(), joueur.getPointsVie(), joueur.getPopularite(),
-                                 adversaire.getNom(), adversaire.getPointsVie(), adversaire.getPopularite());
-    }
 
     public static void main(String[] args) {
     	

@@ -67,7 +67,7 @@ package pirate;
 	        for (int i = 0; i < joueur.getNombreCartes(); i++) {
 	            System.out.println((i + 1) + "- " + joueur.getCarte(i).getNom() + " - " + joueur.getCarte(i).getDescription());
 	        }
-	    }
+	    } 
 
 	    @Override
 	    public void afficherMessageChoixInvalide() {
@@ -75,10 +75,7 @@ package pirate;
 	    }
 
 	  
-	    @Override
-	    public void afficherEffet(String pirate, String effet) {
-	        System.out.println("Effet appliqué à " + pirate + " : " + effet);
-	    }
+	   
 
 	    @Override
 	    public void afficherPoints(String pirate1, int vie1, int pop1, String pirate2, int vie2, int pop2) {
